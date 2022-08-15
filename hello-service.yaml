@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hello-deployment
+  labels:
+    app: hello-docker
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: hello-docker
+  template:
+    metadata:
+      labels:
+        app: hello-docker
+    spec:
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: hello-docker
+          image: registry.cn-guangzhou.aliyuncs.com/hello_kubernetes/hello-docker:30c2b96
+          ports:
+            - containerPort: 8080
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: hello-service
+spec:
+  selector: # 选择服务对应的 pod
+    app: hello-docker
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 8080 # 访问容器的 80 port
+      targetPort: 8080 # targetPort 设置和 port 一样

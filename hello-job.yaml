@@ -1,0 +1,12 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: hello-job
+spec:
+  template:
+    spec:
+      containers:
+      - name: hello-job
+        image: alpine:3.14
+        command: ['sh', '-c', 'apk --update add curl && curl hello-service:8080']
+      restartPolicy: OnFailure

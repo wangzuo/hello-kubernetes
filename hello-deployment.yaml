@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # 创建名为 hello-deployment 的 Deployment
+  name: hello-deployment
+  labels:
+    app: hello-docker
+spec:
+  # 需要部署的pod数量
+  replicas: 3
+
+  # 定义哪些 pod 归当前deployment管理
+  selector:
+    # 通过标签来匹配 app=hello-docker
+    matchLabels:
+      app: hello-docker
+
+  # pod 参数配置
+  template:
+    metadata:
+      # 添加标签对应之前的selector
+      labels:
+        app: hello-docker
+    spec: # spec 和手动创建 pod 相同
+      imagePullSecrets:
+        - name: regcred
+      containers:
+        - name: hello-docker
+          image: registry.cn-guangzhou.aliyuncs.com/hello_kubernetes/hello-docker:30c2b96
+          ports:
+            - containerPort: 8080

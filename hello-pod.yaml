@@ -3,8 +3,10 @@ kind: Pod
 metadata:
   name: hello-docker
 spec:
+  imagePullSecrets:
+    - name: regcred
   containers:
-  - name: hello-docker
-    image: 8.134.137.0:31964/hello-docker:0d373f3
-    ports:
-    - containerPort: 8080
+    - name: hello-docker
+      image: registry.cn-guangzhou.aliyuncs.com/hello_kubernetes/hello-docker:30c2b96
+      ports:
+        - containerPort: 8080
